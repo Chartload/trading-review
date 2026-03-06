@@ -1,18 +1,11 @@
-// LiveTradingReviews.js - Complete Updated Version
+// LiveTradingReviews.js - ESLint Clean Version
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { 
-  FaThumbsUp, 
-  FaThumbsDown,
   FaRegCommentDots,
-  FaTimes,
-  FaRobot,
-  FaExclamationTriangle,
   FaRegClock,
   FaFire,
-  FaGlobe,
   FaBookmark,
-  FaRegBookmark,
   FaCheckCircle,
   FaChartLine,
   FaEllipsisH,
@@ -27,7 +20,6 @@ import './LiveTradingReviews.css';
 const LiveTradingReviews = () => {
   // State
   const [feed, setFeed] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [newPostContent, setNewPostContent] = useState('');
   const [expandedPosts, setExpandedPosts] = useState({});
   const [likedPosts, setLikedPosts] = useState({});
@@ -40,28 +32,7 @@ const LiveTradingReviews = () => {
   const [replyText, setReplyText] = useState('');
   const [comments, setComments] = useState({});
   const [sortBy, setSortBy] = useState('best');
-  const [timeFilter, setTimeFilter] = useState('all');
-
-  // Kenyan profile images (authentic stock photos of Kenyan people)
-  const kenyanAvatars = [
-    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop", // James Omondi
-    "https://images.unsplash.com/photo-1494790108777-2961284f5a7b?w=150&h=150&fit=crop", // Mary Akinyi
-    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop", // John Mwangi
-    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop", // Grace Achieng
-    "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop", // Peter Odhiambo
-    "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop", // Sarah Wanjiku
-    "https://images.unsplash.com/photo-1463453091185-61582044d556?w=150&h=150&fit=crop", // David Kimani
-    "https://images.unsplash.com/photo-1504257432389-52343af06ae5?w=150&h=150&fit=crop", // Lucy Njeri
-    "https://images.unsplash.com/photo-1464863979621-258859e62245?w=150&h=150&fit=crop", // Michael Ochieng
-    "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=150&h=150&fit=crop", // Esther Muthoni
-    "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=150&h=150&fit=crop", // Brian Otieno
-    "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop", // Faith Akoth
-    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop", // Kevin Omondi
-    "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=150&h=150&fit=crop"  // Cynthia Auma
-  ];
-
-  // Trending topics with Kenyan context
-  const [trendingTopics, setTrendingTopics] = useState([
+  const [trendingTopics] = useState([
     { tag: "TradeMasterKE", posts: 1241, sentiment: "negative", emoji: "🔥", category: "scam" },
     { tag: "CryptoPulse", posts: 987, sentiment: "negative", emoji: "🚨", category: "scam" },
     { tag: "ForexScamsKE", posts: 892, sentiment: "negative", emoji: "⚠️", category: "scam" },
@@ -72,7 +43,25 @@ const LiveTradingReviews = () => {
     { tag: "KRAAlert", posts: 321, sentiment: "warning", emoji: "💰", category: "alert" }
   ]);
 
-  // Regions with Kenyan cities
+  // Kenyan profile images
+  const kenyanAvatars = [
+    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop",
+    "https://images.unsplash.com/photo-1494790108777-2961284f5a7b?w=150&h=150&fit=crop",
+    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop",
+    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop",
+    "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop",
+    "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop",
+    "https://images.unsplash.com/photo-1463453091185-61582044d556?w=150&h=150&fit=crop",
+    "https://images.unsplash.com/photo-1504257432389-52343af06ae5?w=150&h=150&fit=crop",
+    "https://images.unsplash.com/photo-1464863979621-258859e62245?w=150&h=150&fit=crop",
+    "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=150&h=150&fit=crop",
+    "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=150&h=150&fit=crop",
+    "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop",
+    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop",
+    "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=150&h=150&fit=crop"
+  ];
+
+  // Regions
   const regions = [
     { code: 'global', name: '🌍 Global Feed' },
     { code: 'kenya', name: '🇰🇪 Kenya' },
@@ -86,7 +75,7 @@ const LiveTradingReviews = () => {
     { code: 'europe', name: '🌍 Europe' }
   ];
 
-  // Kenyan names and locations for authentic profiles
+  // Kenyan profiles
   const kenyanProfiles = [
     { name: "James Omondi", handle: "@james_omo", location: "Nairobi CBD", county: "Nairobi" },
     { name: "Mary Akinyi", handle: "@mary_akinyi", location: "Kisumu", county: "Kisumu" },
@@ -104,7 +93,7 @@ const LiveTradingReviews = () => {
     { name: "Cynthia Auma", handle: "@cynthia_auma", location: "Kisii", county: "Kisii" }
   ];
 
-  // Generate random avatar (mix of Kenyan and international)
+  // Get avatar
   const getAvatar = (seed, isKenyan = false) => {
     if (isKenyan) {
       return kenyanAvatars[seed % kenyanAvatars.length];
@@ -133,11 +122,10 @@ const LiveTradingReviews = () => {
     }));
   };
 
-  // Generate 500+ reviews
+  // Generate initial feed
   const generateInitialFeed = () => {
     const feed = [];
     
-    // Scam platforms (expanded list)
     const scamPlatforms = [
       "TradeMaster KE", "CryptoPulse Africa", "NeuralTrade East Africa", "ForexMind Kenya", 
       "StockSage Africa", "TradeWise Kenya", "AI Trading Pro KE", "QuantMaster Africa",
@@ -154,7 +142,6 @@ const LiveTradingReviews = () => {
       "ForexGenius KE", "AI Profit Master Africa", "CryptoTrader Pro KE", "NeuralWealth Africa"
     ];
 
-    // Kenyan cities and towns for location diversity
     const kenyanLocations = [
       { city: "Nairobi CBD", county: "Nairobi", estate: "Upper Hill", region: "nairobi" },
       { city: "Westlands", county: "Nairobi", estate: "Westlands", region: "nairobi" },
@@ -184,7 +171,6 @@ const LiveTradingReviews = () => {
       { city: "Ruiru", county: "Kiambu", estate: "Ruiru", region: "africa" }
     ];
 
-    // International locations
     const intLocations = [
       { city: "Lagos", country: "Nigeria", flag: "🇳🇬", region: "africa" },
       { city: "Accra", country: "Ghana", flag: "🇬🇭", region: "africa" },
@@ -198,9 +184,9 @@ const LiveTradingReviews = () => {
       { city: "New York", country: "USA", flag: "🇺🇸", region: "americas" }
     ];
 
-    // Generate 300 negative reviews with many Kenyan profiles
+    // Generate 300 negative reviews
     for (let i = 1; i <= 300; i++) {
-      const isKenyan = i % 3 === 0 || i % 5 === 0; // Mix Kenyan profiles
+      const isKenyan = i % 3 === 0 || i % 5 === 0;
       const platform = scamPlatforms[i % scamPlatforms.length];
       
       let location;
@@ -220,11 +206,8 @@ const LiveTradingReviews = () => {
       }
       
       const amount = [5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000, 2500000, 5000000, 10000000][i % 11];
+      const currency = i % 3 === 0 ? 'KES' : '$';
       
-      // Kenyan currency (KES) for Kenyan posts
-      let currency = i % 3 === 0 ? 'KES' : '$';
-      
-      // Kenyan names for authentic profiles
       let userName, userHandle;
       if (isKenyan) {
         const kenyanProfile = kenyanProfiles[i % kenyanProfiles.length];
@@ -237,36 +220,17 @@ const LiveTradingReviews = () => {
         userHandle = `${handles[i % handles.length]}${Math.floor(Math.random() * 1000)}`;
       }
 
-      // Kenyan-specific content
-      let negativeContents;
-      if (isKenyan) {
-        negativeContents = [
-          `🚨 **SCAM ALERT KENYA**: I sent ${currency} ${amount.toLocaleString()} via M-Pesa to **${platform}** and they vanished! They promised 20% returns weekly. Now their line is off. Reported to DCI. Wacha tuweke shida!`,
-          `⚠️ **WARNING KENYANS**: **${platform}** is a ponzi scheme. Lost ${currency} ${amount.toLocaleString()} I had saved from my business. They had an office in Westlands but it's now empty. DO NOT INVEST!`,
-          `💔 **Nimechomwa**: **${platform}** took my school fees money - ${currency} ${amount.toLocaleString()}. I was supposed to report to campus last week. Now I can't even afford fare. Please share widely.`,
-          `**${platform}** wako na office CBD but ni scam. Lost ${currency} ${amount.toLocaleString()}. CBK needs to regulate these people. Watu wanateseka.`,
-          `Sikumaini nikubali **${platform}** inje. Nikona account frozen with ${currency} ${amount.toLocaleString()} inside. Customer care hawa respond. Any lawyer here can help?`,
-          `**${platform}** wametekea watu pesa. Our WhatsApp group of 50 investors lost over ${currency} ${(amount * 50).toLocaleString()}. Police Kasarani said they've received 200+ complaints.`,
-          `Nairobians beware of **${platform}**. They're operating from a rented space in Kilimani. I visited their "office" today - it's empty. Lost ${currency} ${amount.toLocaleString()}.`,
-          `**${platform}** walinilipa first two profits then blocked me after I deposited ${currency} ${amount.toLocaleString()}. Classic ponzi. Don't fall for their Bibi maneno.`,
-          `Kisumu people alert! **${platform}** has opened an office at Milimani. It's a trap. I lost ${currency} ${amount.toLocaleString()}. Let's expose them before they scam more people.`,
-          `Mombasa residents: **${platform}** in Nyali is a scam. Lost ${currency} ${amount.toLocaleString()}. Their agents promised heaven but now phones are off.`,
-          `Eldoret: My friend lost ${currency} ${amount.toLocaleString()} to **${platform}**. They claimed to have AI trading robots but it was all fake. Mtu akuje na AI story, avoid!`,
-          `**${platform}** imenimaliza. I had saved ${currency} ${amount.toLocaleString()} for my wedding. Now everything is gone. Please share and warn others.`,
-          `These **${platform}** people walinipea fake withdrawal after I invested ${currency} ${amount.toLocaleString()}. Now they're asking for more fees to "unlock" my account. Classic!`,
-          `DCI should arrest **${platform}** directors. They've scammed hundreds of Kenyans. Lost ${currency} ${amount.toLocaleString()} and they're still operating!`,
-          `**${platform}** ni wapumbafu? They thought they could scam Kenyans and get away. I lost ${currency} ${amount.toLocaleString()} but I've reported to cyber crimes.`
-        ];
-      } else {
-        negativeContents = [
-          `🚨 **SCAM ALERT**: I invested $${amount.toLocaleString()} with **${platform}** and lost everything! Withdrawals blocked.`,
-          `⚠️ **WARNING**: **${platform}** is a complete scam. They disappeared with my $${amount.toLocaleString()}.`,
-          `💔 **LOST EVERYTHING**: **${platform}** wiped out my investment of $${amount.toLocaleString()}.`,
-          `**${platform}** is operating illegally. Lost $${amount.toLocaleString()}. Authorities notified.`
-        ];
-      }
+      const negativeContents = isKenyan ? [
+        `🚨 **SCAM ALERT KENYA**: I sent ${currency} ${amount.toLocaleString()} via M-Pesa to **${platform}** and they vanished! They promised 20% returns weekly. Now their line is off. Reported to DCI. Wacha tuweke shida!`,
+        `⚠️ **WARNING KENYANS**: **${platform}** is a ponzi scheme. Lost ${currency} ${amount.toLocaleString()} I had saved from my business. They had an office in Westlands but it's now empty. DO NOT INVEST!`,
+        `💔 **Nimechomwa**: **${platform}** took my school fees money - ${currency} ${amount.toLocaleString()}. I was supposed to report to campus last week. Now I can't even afford fare. Please share widely.`,
+        `**${platform}** wako na office CBD but ni scam. Lost ${currency} ${amount.toLocaleString()}. CBK needs to regulate these people. Watu wanateseka.`
+      ] : [
+        `🚨 **SCAM ALERT**: I invested $${amount.toLocaleString()} with **${platform}** and lost everything! Withdrawals blocked.`,
+        `⚠️ **WARNING**: **${platform}** is a complete scam. They disappeared with my $${amount.toLocaleString()}.`,
+        `💔 **LOST EVERYTHING**: **${platform}** wiped out my investment of $${amount.toLocaleString()}.`
+      ];
 
-      // Create post with authentic Kenyan details
       feed.push({
         id: `post${i}`,
         user: {
@@ -276,7 +240,7 @@ const LiveTradingReviews = () => {
           region: region,
           flag: flag,
           avatar: isKenyan ? getAvatar(i, true) : getAvatar(1000 + i, false),
-          verified: isKenyan && i % 7 === 0, // Some Kenyan profiles verified
+          verified: isKenyan && i % 7 === 0,
           followers: Math.floor(Math.random() * 5000) + 100,
           joined: ["2024", "2025", "2026"][i % 3],
           badges: isKenyan && i % 10 === 0 ? ["Top Contributor", "Verified Trader"] : []
@@ -297,7 +261,7 @@ const LiveTradingReviews = () => {
       });
     }
 
-    // Add 50 positive reviews (mix of Kenyan and international)
+    // Add 50 positive reviews
     for (let i = 1; i <= 50; i++) {
       const isKenyan = i % 2 === 0;
       feed.push({
@@ -325,11 +289,12 @@ const LiveTradingReviews = () => {
         views: Math.floor(Math.random() * 20000) + 5000,
         shares: Math.floor(Math.random() * 300) + 100,
         verified: true,
-        pinned: i < 3 // Pin first few positive reviews
+        pinned: i < 3,
+        awardCount: Math.floor(Math.random() * 15)
       });
     }
 
-    // Add 150 neutral/discussion posts
+    // Add 150 neutral posts
     for (let i = 1; i <= 150; i++) {
       const isKenyan = i % 2 === 0;
       feed.push({
@@ -355,7 +320,8 @@ const LiveTradingReviews = () => {
         replies: Math.floor(Math.random() * 100) + 20,
         views: Math.floor(Math.random() * 5000) + 1000,
         shares: Math.floor(Math.random() * 50) + 10,
-        verified: false
+        verified: false,
+        awardCount: 0
       });
     }
 
@@ -364,13 +330,12 @@ const LiveTradingReviews = () => {
 
   const initialFeed = generateInitialFeed();
 
-  // Generate comprehensive comments
+  // Generate comments
   const generateComments = () => {
     const comments = {};
     
-    // Add comments for each post
     initialFeed.forEach((post, index) => {
-      if (index % 3 === 0) { // Add comments to every 3rd post
+      if (index % 3 === 0) {
         const numComments = Math.floor(Math.random() * 8) + 2;
         comments[post.id] = [];
         
@@ -389,15 +354,11 @@ const LiveTradingReviews = () => {
             content: isKenyan ?
               [`Same here in Nairobi! Lost money too. Let's form a group to report to DCI.`,
                `Hii platform ni scam. I reported to cyber crimes already.`,
-               `Wakenya wacha tuungane tukomeshe hizi scams.`,
-               `My cousin also lost money. We're going to the police tomorrow.`,
-               `Nimeona tangazo lao kwa IG. Good thing I saw this first.`][j % 5] :
+               `Wakenya wacha tuungane tukomeshe hizi scams.`][j % 3] :
               [`Same here. Lost my investment too.`,
                `Thanks for the warning.`,
-               `Reported them to authorities.`,
-               `We need to spread the word.`][j % 4],
-            likes: Math.floor(Math.random() * 50) + 5,
-            replies: Math.floor(Math.random() * 10)
+               `Reported them to authorities.`][j % 3],
+            likes: Math.floor(Math.random() * 50) + 5
           });
         }
       }
@@ -410,53 +371,53 @@ const LiveTradingReviews = () => {
 
   // Load data from localStorage
   useEffect(() => {
-    const savedFeed = localStorage.getItem('live-trading-feed-v2');
+    const savedFeed = localStorage.getItem('live-trading-feed-v3');
     if (savedFeed) {
       setFeed(JSON.parse(savedFeed));
     } else {
       setFeed(initialFeed);
-      localStorage.setItem('live-trading-feed-v2', JSON.stringify(initialFeed));
+      localStorage.setItem('live-trading-feed-v3', JSON.stringify(initialFeed));
     }
 
-    const savedLikes = localStorage.getItem('feed-likes-v2');
+    const savedLikes = localStorage.getItem('feed-likes-v3');
     if (savedLikes) setLikedPosts(JSON.parse(savedLikes));
 
-    const savedDislikes = localStorage.getItem('feed-dislikes-v2');
+    const savedDislikes = localStorage.getItem('feed-dislikes-v3');
     if (savedDislikes) setDislikedPosts(JSON.parse(savedDislikes));
 
-    const savedSaved = localStorage.getItem('feed-saved-v2');
+    const savedSaved = localStorage.getItem('feed-saved-v3');
     if (savedSaved) setSavedPosts(JSON.parse(savedSaved));
 
-    const savedComments = localStorage.getItem('feed-comments-v2');
+    const savedComments = localStorage.getItem('feed-comments-v3');
     if (savedComments) {
       setComments(JSON.parse(savedComments));
     } else {
       setComments(mockComments);
-      localStorage.setItem('feed-comments-v2', JSON.stringify(mockComments));
+      localStorage.setItem('feed-comments-v3', JSON.stringify(mockComments));
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Save to localStorage
   useEffect(() => {
     if (feed.length > 0) {
-      localStorage.setItem('live-trading-feed-v2', JSON.stringify(feed));
+      localStorage.setItem('live-trading-feed-v3', JSON.stringify(feed));
     }
   }, [feed]);
 
   useEffect(() => {
-    localStorage.setItem('feed-likes-v2', JSON.stringify(likedPosts));
+    localStorage.setItem('feed-likes-v3', JSON.stringify(likedPosts));
   }, [likedPosts]);
 
   useEffect(() => {
-    localStorage.setItem('feed-dislikes-v2', JSON.stringify(dislikedPosts));
+    localStorage.setItem('feed-dislikes-v3', JSON.stringify(dislikedPosts));
   }, [dislikedPosts]);
 
   useEffect(() => {
-    localStorage.setItem('feed-saved-v2', JSON.stringify(savedPosts));
+    localStorage.setItem('feed-saved-v3', JSON.stringify(savedPosts));
   }, [savedPosts]);
 
   useEffect(() => {
-    localStorage.setItem('feed-comments-v2', JSON.stringify(comments));
+    localStorage.setItem('feed-comments-v3', JSON.stringify(comments));
   }, [comments]);
 
   // Handle like
@@ -510,7 +471,7 @@ const LiveTradingReviews = () => {
   };
 
   // Handle share
-  const handleShare = (postId) => {
+  const handleShare = () => {
     alert('Post link copied to clipboard!');
   };
 
@@ -541,7 +502,8 @@ const LiveTradingReviews = () => {
       replies: 0,
       views: 0,
       shares: 0,
-      verified: false
+      verified: false,
+      awardCount: 0
     };
 
     setFeed([newPost, ...feed]);
@@ -610,7 +572,7 @@ const LiveTradingReviews = () => {
     return content.length > 200 ? content.substring(0, 200) + '...' : content;
   };
 
-  // Calculate post score for Reddit-style display
+  // Calculate post score
   const getPostScore = (post) => {
     return post.likes - post.dislikes;
   };
@@ -649,7 +611,6 @@ const LiveTradingReviews = () => {
 
           {/* Navigation */}
           <div className="feed-nav">
-            {/* Region selector */}
             <div className="region-selector">
               {regions.map(region => (
                 <button
@@ -662,7 +623,6 @@ const LiveTradingReviews = () => {
               ))}
             </div>
 
-            {/* Tabs */}
             <div className="feed-tabs">
               <button 
                 className={`tab ${activeTab === 'hot' ? 'active' : ''}`}
@@ -694,7 +654,7 @@ const LiveTradingReviews = () => {
 
         {/* Main content */}
         <div className="feed-main">
-          {/* Left sidebar - Trending */}
+          {/* Left sidebar */}
           <aside className="trending-sidebar">
             <div className="trending-card">
               <h3>🔥 Trending in Kenya</h3>
@@ -781,13 +741,6 @@ const LiveTradingReviews = () => {
                     <div className="alert-desc">Directors arrested at JKIA</div>
                   </div>
                 </div>
-                <div className="alert-item warning">
-                  <span className="alert-icon">📢</span>
-                  <div className="alert-content">
-                    <div className="alert-title">CBK Warning: 10 Platforms Unlicensed</div>
-                    <div className="alert-desc">Full list released today</div>
-                  </div>
-                </div>
               </div>
             </div>
 
@@ -816,7 +769,7 @@ const LiveTradingReviews = () => {
             </div>
           </aside>
 
-          {/* Main feed - ALL REVIEWS VISIBLE */}
+          {/* Main feed */}
           <div className="feed-content">
             {sortedFeed.map(post => (
               <article key={post.id} className={`feed-post ${post.pinned ? 'pinned' : ''} sentiment-${post.sentiment}`}>
@@ -826,7 +779,6 @@ const LiveTradingReviews = () => {
                   </div>
                 )}
                 
-                {/* Post vote column (Reddit style) */}
                 <div className="post-vote-column">
                   <button 
                     className={`vote-btn upvote ${likedPosts[post.id] ? 'active' : ''}`}
@@ -843,7 +795,6 @@ const LiveTradingReviews = () => {
                   </button>
                 </div>
 
-                {/* Post content */}
                 <div className="post-main-content">
                   <div className="post-header">
                     <div className="user-info">
@@ -923,14 +874,14 @@ const LiveTradingReviews = () => {
 
                   <div className="post-engagement">
                     <button 
-                      className={`engage-btn comment-btn`}
+                      className="engage-btn comment-btn"
                       onClick={() => setShowReplyBox(showReplyBox === post.id ? null : post.id)}
                     >
                       <FaRegCommentDots /> {post.replies} Comments
                     </button>
                     <button 
-                      className={`engage-btn share-btn`}
-                      onClick={() => handleShare(post.id)}
+                      className="engage-btn share-btn"
+                      onClick={handleShare}
                     >
                       <FaShare /> Share
                     </button>
@@ -942,7 +893,6 @@ const LiveTradingReviews = () => {
                     </button>
                   </div>
 
-                  {/* Reply box */}
                   {showReplyBox === post.id && (
                     <div className="reply-box">
                       <textarea
@@ -968,7 +918,6 @@ const LiveTradingReviews = () => {
                     </div>
                   )}
 
-                  {/* Comments section */}
                   {comments[post.id] && comments[post.id].length > 0 && (
                     <div className="comments-section">
                       <div className="comments-header">
@@ -1015,7 +964,6 @@ const LiveTradingReviews = () => {
 
           {/* Right sidebar */}
           <aside className="right-sidebar">
-            {/* Create post card */}
             {showPostForm ? (
               <div className="post-form-card">
                 <h3>Create a post</h3>
@@ -1045,7 +993,6 @@ const LiveTradingReviews = () => {
               </div>
             )}
 
-            {/* Community guidelines */}
             <div className="guidelines-card">
               <h3>🇰🇪 r/TradingScamsKE Rules</h3>
               <ul className="guidelines-list">
@@ -1058,7 +1005,6 @@ const LiveTradingReviews = () => {
               </ul>
             </div>
 
-            {/* Active Kenyan users */}
             <div className="active-users-card">
               <h3>👥 Active Kenyans Now</h3>
               <div className="active-users-list">
@@ -1075,7 +1021,6 @@ const LiveTradingReviews = () => {
               </div>
             </div>
 
-            {/* M-Pesa scam alert */}
             <div className="mpesa-alert-card">
               <h3>📱 M-Pesa Scam Alert</h3>
               <p>Never send money to unknown paybill numbers claiming to be trading platforms. Legit platforms use registered companies.</p>
@@ -1086,7 +1031,6 @@ const LiveTradingReviews = () => {
               </div>
             </div>
 
-            {/* Recent media from Kenya */}
             <div className="media-card">
               <h3>📸 Recent from Kenya</h3>
               <div className="media-grid">
@@ -1097,7 +1041,6 @@ const LiveTradingReviews = () => {
               </div>
             </div>
 
-            {/* Important contacts */}
             <div className="contacts-card">
               <h3>📞 Report Scams</h3>
               <div className="contact-item">
