@@ -1,18 +1,14 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Helmet } from 'react-helmet-async';
 import { 
   FaStar, 
   FaStarHalfAlt, 
   FaRegStar, 
   FaThumbsUp, 
   FaThumbsDown,
-  FaCheckCircle,
   FaExclamationTriangle,
   FaRegCommentDots,
   FaTimes,
   FaShare,
-  FaRobot,
-  FaChartLine
+  FaRobot
 } from 'react-icons/fa';
 import './AITradingReviews.css';
 
