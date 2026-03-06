@@ -11,7 +11,9 @@ import {
   FaRobot
 } from 'react-icons/fa';
 import './AITradingReviews.css';
+import { Helmet } from 'react-helmet-async';
 
+import React, { useState, useEffect, useCallback } from 'react';
 const AITradingReviews = () => {
   const affiliateLink = "https://chartlordai.com/?ref=mrxw4yhbhrco";
   
