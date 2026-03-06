@@ -1,13 +1,13 @@
 import React from 'react';
 import { HelmetProvider } from 'react-helmet-async';
-import AITradingReviews from './components/AITradingReviews';
+import LiveTradingReviews from './components/LiveTradingReviews';
 import './App.css';
 
 function App() {
   return (
     <HelmetProvider>
       <div className="App">
-        <AITradingReviews />
+        <LiveTradingReviews />
       </div>
     </HelmetProvider>
   );
